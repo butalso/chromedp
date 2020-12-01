@@ -3,10 +3,10 @@ package chromedp
 import (
 	"context"
 
+	"github.com/butalso/chromedp/kb"
 	"github.com/chromedp/cdproto/cdp"
 	"github.com/chromedp/cdproto/dom"
 	"github.com/chromedp/cdproto/input"
-	"github.com/chromedp/chromedp/kb"
 )
 
 // MouseAction are mouse input event actions

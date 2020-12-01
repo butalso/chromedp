@@ -14,13 +14,13 @@ import (
 	"strings"
 	"time"
 
+	"github.com/butalso/chromedp"
+	"github.com/butalso/chromedp/device"
 	"github.com/chromedp/cdproto/cdp"
 	"github.com/chromedp/cdproto/dom"
 	"github.com/chromedp/cdproto/page"
 	"github.com/chromedp/cdproto/runtime"
 	"github.com/chromedp/cdproto/target"
-	"github.com/chromedp/chromedp"
-	"github.com/chromedp/chromedp/device"
 )
 
 func writeHTML(content string) http.Handler {
@@ -406,7 +406,7 @@ func ExamplePrintToPDF() {
 
 	var buf []byte
 	if err := chromedp.Run(ctx,
-		chromedp.Navigate(`https://godoc.org/github.com/chromedp/chromedp`),
+		chromedp.Navigate(`https://godoc.org/github.com/butalso/chromedp`),
 		chromedp.ActionFunc(func(ctx context.Context) error {
 			var err error
 			buf, _, err = page.PrintToPDF().

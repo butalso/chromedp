@@ -10,8 +10,11 @@ import (
 	"io/ioutil"
 	"os"
 	"os/exec"
+	"os/user"
 	"path/filepath"
+	"strconv"
 	"sync"
+	"syscall"
 	"time"
 )
 
@@ -170,6 +173,38 @@ func (a *ExecAllocator) Allocate(ctx context.Context, opts ...BrowserOption) (*B
 		}
 	}()
 	allocateCmdOptions(cmd)
+
+	// @ouwenyue 魔改开源库部分，可指定用户运行某浏览器
+	if username, ok := a.initFlags["execute-user"].(string); ok && username != "" {
+		// 检测用户是否存在
+		user, err := user.Lookup(username)
+		if err != nil {
+			return nil, err
+		}
+
+		// set process attr
+		// 获取用户 id
+		uid, err := strconv.ParseUint(user.Uid, 10, 32)
+		if err != nil {
+			return nil, err
+		}
+		// 获取用户组 id
+		gid, err := strconv.ParseUint(user.Gid, 10, 32)
+		if err != nil {
+			return nil, err
+		}
+
+		attr := &syscall.SysProcAttr{
+			Setpgid: true,
+		}
+		//设置进程执行用户
+		attr.Credential = &syscall.Credential{
+			Uid:         uint32(uid),
+			Gid:         uint32(gid),
+			NoSetGroups: true,
+		}
+		cmd.SysProcAttr = attr
+	}
 
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {

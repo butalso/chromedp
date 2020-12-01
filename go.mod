@@ -1,4 +1,4 @@
-module github.com/chromedp/chromedp
+module github.com/butalso/chromedp
 
 go 1.13
 
