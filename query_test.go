@@ -14,10 +14,10 @@ import (
 	"testing"
 	"time"
 
+	"github.com/butalso/chromedp/kb"
 	"github.com/chromedp/cdproto/cdp"
 	"github.com/chromedp/cdproto/css"
 	"github.com/chromedp/cdproto/dom"
-	"github.com/chromedp/chromedp/kb"
 )
 
 func TestWaitReady(t *testing.T) {
